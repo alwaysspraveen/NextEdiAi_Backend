@@ -1,0 +1,13 @@
+const router = require("express").Router();
+const { protect, permit } = require("../middlewares/auth");
+const c = require("../controllers/user.controller");
+router.use(protect);
+router.post("/", permit("PRINCIPAL"), c.createUser);
+router.get("/:classId", c.listStudentByClass);
+router.get("/parents", permit("PRINCIPAL", "TEACHER"), c.listParents);
+router.get("/students", permit("PRINCIPAL", "TEACHER"), c.listStudents);
+router.get("/", permit("PRINCIPAL"), c.listUsers);
+router.put("/:id", permit("PRINCIPAL"), c.updateUser);
+router.delete("/:id", permit("PRINCIPAL"), c.deleteUser);
+router.post("/link-parent", permit("PRINCIPAL"), c.linkParent);
+module.exports = router;
